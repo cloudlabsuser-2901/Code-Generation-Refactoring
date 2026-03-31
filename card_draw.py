@@ -1,15 +1,33 @@
-# Intentionally flawed Python program
+# Fixed card drawing program
 
-# importing modules
-import itertools, random
+import itertools
+import random
 
-# make a deck of cards
-deck = list(itertools.product(range(1,14),['Spade','Heart','Diamond','Club'])
+def build_deck() -> list[tuple[int, str]]:
+    """Create a standard 52-card deck."""
+    suits = ['Spade', 'Heart', 'Diamond', 'Club']
+    values = range(1, 14)
+    return list(itertools.product(values, suits))
 
-# shuffle the cards
-random.shuffle(deck)
+def rank_to_name(value: int) -> str:
+    """Map card numeric value to human-readable rank."""
+    return {1: 'Ace', 11: 'Jack', 12: 'Queen', 13: 'King'}.get(value, str(value))
 
-# draw five cards
-print("You got:")
-for i in range(5)
-   print(deck[i][0], "of", deck[i][1]
+
+def draw_cards(count: int = 5) -> list[tuple[int, str]]:
+    """Shuffle and draw a number of cards from the deck."""
+    deck = build_deck()
+    random.shuffle(deck)
+    if not 0 < count <= len(deck):
+        raise ValueError('count must be between 1 and 52')
+    return deck[:count]
+
+
+def main() -> None:
+    print('You got:')
+    for value, suit in draw_cards(5):
+        print(f"{rank_to_name(value)} of {suit}")
+
+
+if __name__ == '__main__':
+    main()
